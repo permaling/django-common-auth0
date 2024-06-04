@@ -1,0 +1,41 @@
+<div class="pk-holder" data-pk="{{ pk }}"></div> <!-- render the pk into each row -->
+<svg style="z-index: -1000; width: 20px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+    <path style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;isolation:auto;mix-blend-mode:normal;z-index: -1000"
+          d="M 40 9.5859375 L 32.292969 17.292969 L 33.707031 18.707031 L 39.064453 13.349609 A 1 1 0 0 0 40 14 A 1 1 0 0 0 40.935547 13.349609 L 46.292969 18.707031 L 47.707031 17.292969 L 40 9.5859375 z M 40 16 A 1 1 0 0 0 39 17 A 1 1 0 0 0 40 18 A 1 1 0 0 0 41 17 A 1 1 0 0 0 40 16 z M 40 20 A 1 1 0 0 0 39 21 A 1 1 0 0 0 40 22 A 1 1 0 0 0 41 21 A 1 1 0 0 0 40 20 z M 40 24 A 1 1 0 0 0 39 25 A 1 1 0 0 0 40 26 A 1 1 0 0 0 41 25 A 1 1 0 0 0 40 24 z M 40 28 A 1 1 0 0 0 39 29 L 11 29 L 11 31 L 69 31 L 69 29 L 41 29 A 1 1 0 0 0 40 28 z M 11 39 L 11 41 L 69 41 L 69 39 L 11 39 z M 11 49 L 11 51 L 39 51 A 1 1 0 0 0 40 52 A 1 1 0 0 0 41 51 L 69 51 L 69 49 L 11 49 z M 40 54 A 1 1 0 0 0 39 55 A 1 1 0 0 0 40 56 A 1 1 0 0 0 41 55 A 1 1 0 0 0 40 54 z M 40 58 A 1 1 0 0 0 39 59 A 1 1 0 0 0 40 60 A 1 1 0 0 0 41 59 A 1 1 0 0 0 40 58 z M 33.707031 61.292969 L 32.292969 62.707031 L 40 70.414062 L 47.707031 62.707031 L 46.292969 61.292969 L 40.935547 66.650391 A 1 1 0 0 0 40 66 A 1 1 0 0 0 39.064453 66.650391 L 33.707031 61.292969 z M 40 62 A 1 1 0 0 0 39 63 A 1 1 0 0 0 40 64 A 1 1 0 0 0 41 63 A 1 1 0 0 0 40 62 z"/>
+</svg>
+<style>[draggable=true] {
+    -khtml-user-drag: element;
+}</style>  <!-- fix for dragging in safari -->
+<script>
+    window.__draggedObjPk = null;
+
+    django.jQuery(function () {
+        const $ = django.jQuery;
+        if (!window.__listSortableSemaphore) {  // make sure this part only runs once
+            window.__move_to_url = '{{ url }}'; // this is the url including the placeholder pks
+            $('#result_list > tbody > tr').each(function (idx, tr) {
+                const $tr = $(tr);
+                $tr.attr('draggable', 'true');
+                const pk = $tr.find('.pk-holder').attr('data-pk');
+                $tr.attr('data-pk', pk);
+                $tr.css('z-index', 1000);
+                $tr.on('dragstart', function (event) {
+                    event.originalEvent.dataTransfer.setData('text/plain', null);  // make draggable work in firefox
+                    window.__draggedObjPk = $(this).attr('data-pk');
+                });
+                $tr.on('dragover', false); // make it droppable
+                $tr.on('drop', function (event) {
+                    event.preventDefault();  // prevent firefox from opening the dataTransfer data
+                    const otherPk = $(this).attr('data-pk');
+                    console.log(window.__draggedObjPk, 'dropped on', otherPk);
+                    const url = window.__move_to_url
+                            .replace('\/0\/', '/' + otherPk + '/')
+                            .replace('\/-1\/', '/' + window.__draggedObjPk + '/');
+                    console.log('redirecting', url);
+                    window.location = url;
+                });
+            });
+            window.__listSortableSemaphore = true;
+        }
+    });
+</script>

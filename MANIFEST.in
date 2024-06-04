@@ -1,0 +1,5 @@
+include README.rst
+include requirements.txt
+recursive-include lj_common_shared_service *.html *.txt *.xml *.po *.mo *.js
+global-exclude __pycache__
+global-exclude *.py[co]
