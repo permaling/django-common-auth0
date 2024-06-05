@@ -2,9 +2,11 @@
 import setuptools
 import os
 
+VERSION = "11.0.0"
+
 if __name__ == "__main__":
     setuptools.setup(
-        version=os.environ.get("PACKAGE_VERSION", "1.0.0"),
+        version=VERSION,
         install_requires=[
             'pilkit @ git+https://github.com/jokerinteractive/pilkit.git@e2eb73e1798865a201e570fced0bac195b2a590c',
             'admin_multiupload @ git+https://github.com/python-force/django-admin-multiupload.git@master#egg=admin_multiupload-1.10',

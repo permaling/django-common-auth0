@@ -2,14 +2,13 @@
 
 ## Get Started
 
-
 1. Install the library:
 
     ```bash
-    pip install django-common-shared-service
+    pip install git+https://github.com/permaling/django-common-auth0.git
     ```
 
-2. Add "lj_common_shared_service" to your INSTALLED_APPS setting like this:
+1. Add "lj_common_shared_service" to your INSTALLED_APPS setting like this:
 
     ```py
     INSTALLED_APPS = [
@@ -18,7 +17,7 @@
     ]
     ```
 
-3. To use the Auth0 service put the following into::
+1. To use the Auth0 service put the following into::
 
     ```py
     REST_FRAMEWORK = {
@@ -33,7 +32,7 @@
     ]
     ```
 
-4. Set the Auth0 credentials in the settings.py:
+1. Set the Auth0 credentials in the settings.py:
 
     ```py
     AUTH0_AUDIENCE = ''
@@ -42,7 +41,7 @@
     AUTH0_SECRET = ''
     ```
 
-5. Set the following entries::
+1. Set the following entries::
 
     ```py
     AUTHENTICATION_BACKENDS = (
@@ -64,5 +63,4 @@
     }
     ```
 
-6. Run `python manage.py migrate` to create the models.
-
+1. Run `python manage.py migrate` to create the models.
